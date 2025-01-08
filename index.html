@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoFT - FineTune LLMs Easily</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>AutoFT - FineTune LLMs Easily</h1>
+            <p class="subtitle">Welcome to AutoFT! This tool simplifies fine-tuning large language models (LLMs) for
+                various tasks.
+                Configure your model, dataset, and hyperparameters below, and start training with just one click!</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab('model')">Model & Dataset</button>
+            <button class="tab-button" onclick="openTab('hyperparams')">Hyperparameters</button>
+            <button class="tab-button" onclick="openTab('data')">Data Columns</button>
+            <button class="tab-button" onclick="openTab('visualization')">Visualization</button>
+        </div>
+
+        <div class="tab-content">
+            <!-- Model & Dataset Tab -->
+            <div id="model" class="tab-pane active">
+                <div class="form-group">
+                    <label>Pretrained Model Name</label>
+                    <select id="model-select">
+                        {% for model in models %}
+                        <option value="{{ model }}">{{ model }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Dataset Name (Hugging Face Datasets)</label>
+                    <input type="text" placeholder="e.g., wikitext, cnn_dailymail, imdb">
+                </div>
+
+                <div class="form-group">
+                    <label>Task Type</label>
+                    <select id="task-select">
+                        {% for task in tasks %}
+                        <option value="{{ task }}">{{ task }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Hugging Face Token (optional)</label>
+                    <input type="password" placeholder="Enter your Hugging Face Token">
+                </div>
+            </div>
+
+            <!-- Hyperparameters Tab -->
+            <div id="hyperparams" class="tab-pane">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Number of Epochs</label>
+                        <input type="number" value="3" min="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Batch Size</label>
+                        <input type="number" value="2" min="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Learning Rate</label>
+                        <input type="number" value="0.000001" step="0.000001">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Optimizer</label>
+                        <select id="optimizer-select">
+                            {% for optimizer in optimizers %}
+                            <option value="{{ optimizer }}">{{ optimizer }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Seed</label>
+                        <input type="number" value="42" min="1">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Columns Tab -->
+            <div id="data" class="tab-pane">
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Input Column</label>
+                        <input type="text" value="text">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Output Column (optional)</label>
+                        <input type="text" placeholder="e.g., answer, summary">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualization Tab -->
+            <div id="visualization" class="tab-pane">
+                <div class="visualization-placeholder">
+                    <i class="fas fa-chart-line"></i>
+                    <p>Training visualization will appear here</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="btn primary" onclick="startTraining()">
+                <i class="fas fa-play"></i> Start Fine-Tuning
+            </button>
+            <button class="btn secondary" onclick="saveConfig()">
+                <i class="fas fa-save"></i> Save Configuration
+            </button>
+            <button class="btn secondary" onclick="loadConfig()">
+                <i class="fas fa-folder-open"></i> Load Configuration
+            </button>
+        </div>
+
+        <div class="logs-section">
+            <h3>Training Logs</h3>
+            <textarea id="training-logs" readonly></textarea>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>
